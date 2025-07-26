@@ -483,6 +483,7 @@ static void bt_ready(int err) {
 }
 
 int main() {
+    usb_enable();
     LOG_INF("Gamepad nRF52");
 
     if (!CHK(bt_conn_auth_cb_register(&conn_auth_callbacks))) {
