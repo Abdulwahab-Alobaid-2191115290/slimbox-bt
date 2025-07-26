@@ -1,7 +1,27 @@
-#include <zephyr.h>
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/hci.h>
-#include <sys/printk.h>
+#include <assert.h>
+#include <errno.h>
+#include <soc.h>
+#include <stddef.h>
+#include <string.h>
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
+#include <zephyr/settings/settings.h>
+#include <zephyr/sys/byteorder.h>
+#include <zephyr/sys/poweroff.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/sys/reboot.h>
+#include <zephyr/types.h>
+
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/conn.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/bluetooth/hci.h>
+#include <zephyr/bluetooth/uuid.h>
+
+#include <bluetooth/services/hids.h>
+#include <zephyr/bluetooth/services/bas.h>
+#include <zephyr/bluetooth/services/dis.h>
 
 static void bt_ready(int err)
 {
