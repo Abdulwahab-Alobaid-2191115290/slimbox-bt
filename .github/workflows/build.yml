@@ -6,6 +6,7 @@ on:
       - 'prj.conf'
       - 'CMakeLists.txt'
   workflow_call:
+  workflow_dispatch:
 defaults:
   run:
     shell: bash --noprofile --norc -x -e -o pipefail {0}
