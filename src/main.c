@@ -144,8 +144,8 @@ static void advertising_work_fn(struct k_work* work) {
             LOG_INF("Enabling filter: %s", addr_buf);
             adv_param.options |= BT_LE_ADV_OPT_FILTER_CONN;
             adv_param.options |= BT_LE_ADV_OPT_FILTER_SCAN_REQ;
-            bt_le_filter_accept_list_clear();
-            bt_le_filter_accept_list_add(&addr);
+            // bt_le_filter_accept_list_clear();
+            // bt_le_filter_accept_list_add(&addr);
         } else {
             LOG_INF("Not enabling filter.");
         }
@@ -484,12 +484,16 @@ int main() {
     }
 
     report_init();
-    hid_init();
+    
 
     if (!CHK(bt_enable(NULL))) {
         return 0;
     }
 
+    bt_set_name("Gamepad nRF52");
+
+    hid_init();
+    
     settings_load();
     advertising_start();
     configure_buttons();
