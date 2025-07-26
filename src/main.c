@@ -472,6 +472,16 @@ static void handle_buttons() {
     }
 }
 
+static void bt_ready(int err) {
+    if (err) {
+        LOG_ERR("Bluetooth init failed (err %d)", err);
+        return;
+    }
+    LOG_INF("BT ready");
+    hid_init();
+    advertising_start();
+}
+
 int main() {
     LOG_INF("Gamepad nRF52");
 
@@ -486,16 +496,12 @@ int main() {
     report_init();
     
 
-    if (!CHK(bt_enable(NULL))) {
+    if (!CHK(bt_enable(bt_ready))) {
         return 0;
     }
 
-    bt_set_name("Gamepad nRF52");
-
-    hid_init();
     
     settings_load();
-    advertising_start();
     configure_buttons();
 
     while (1) {
