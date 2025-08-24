@@ -182,7 +182,6 @@ static void clear_bonds_work_fn(struct k_work* work) {
         CHK(bt_le_adv_stop());
         advertising_start();
     }
-    reset_to_bootloader();
 }
 static K_WORK_DEFINE(clear_bonds_work, clear_bonds_work_fn);
 
