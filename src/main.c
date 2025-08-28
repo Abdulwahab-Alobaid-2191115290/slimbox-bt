@@ -144,7 +144,7 @@ static void advertising_work_fn(struct k_work* work) {
             LOG_INF("Enabling filter: %s", addr_buf);
             adv_param.options |= BT_LE_ADV_OPT_FILTER_CONN;
             adv_param.options |= BT_LE_ADV_OPT_FILTER_SCAN_REQ;
-            bt_le_filter_accept_list_clear();
+            // bt_le_filter_accept_list_clear();
             bt_le_filter_accept_list_add(&addr);
         } else {
             LOG_INF("Not enabling filter.");
