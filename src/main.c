@@ -25,9 +25,9 @@
 
 LOG_MODULE_REGISTER(gamepad, LOG_LEVEL_DBG);
 
-#if DT_NODE_HAS_STATUS(DT_ALIAS(expanderreset), okay)
-static const struct gpio_dt_spec expander_reset = GPIO_DT_SPEC_GET(DT_ALIAS(expanderreset), gpios);
-#endif
+//#if DT_NODE_HAS_STATUS(DT_ALIAS(expanderreset), okay)
+//static const struct gpio_dt_spec expander_reset = GPIO_DT_SPEC_GET(DT_ALIAS(expanderreset), gpios);
+//#endif
 
 #define CHK(X) ({ int err = X; if (err != 0) { LOG_ERR("%s returned %d (%s:%d)", #X, err, __FILE__, __LINE__); } err == 0; })
 
@@ -101,10 +101,10 @@ static int prev_sys_button_state = 0;
 static int64_t sys_button_pressed_at;
 
 static void sleep_work_fn(struct k_work* work) {
-#if DT_NODE_HAS_STATUS(DT_ALIAS(expanderreset), okay)
+//#if DT_NODE_HAS_STATUS(DT_ALIAS(expanderreset), okay)
     // drive expander reset pin low
-    gpio_pin_set_dt(&expander_reset, 1);
-#endif
+  //  gpio_pin_set_dt(&expander_reset, 1);
+//#endif
     LOG_INF("Going to sleep...");
     sys_poweroff();
 }
@@ -160,8 +160,8 @@ static void advertising_work_fn(struct k_work* work) {
 static K_WORK_DEFINE(advertising_work, advertising_work_fn);
 
 static void advertising_start(void) {
-       try_directed = true;
-    // try_directed = false;
+    //    try_directed = true;
+    try_directed = false;
     k_work_submit(&advertising_work);
     k_work_reschedule(&sleep_work, DISCONNECTED_SLEEP_TIMEOUT);
 }
@@ -217,7 +217,6 @@ static void disconnected(struct bt_conn* conn, uint8_t reason) {
     LOG_INF("%s (reason=%u)", addr, reason);
 
     if (conn == active_conn) {
-        k_work_submit(&clear_bonds_work);
         CHK(bt_hids_disconnected(&hids_obj, conn));
         active_conn = NULL;
     } else {
@@ -448,21 +447,21 @@ static void handle_buttons() {
     report.menu = gpio_pin_get_dt(&buttons[0]);
     report.options = gpio_pin_get_dt(&buttons[1]);
     report.stadia = gpio_pin_get_dt(&buttons[2]);
-    report.capture = gpio_pin_get_dt(&buttons[3]);
-    report.l3 = gpio_pin_get_dt(&buttons[4]);
-    report.r3 = gpio_pin_get_dt(&buttons[5]);
-    report.x = gpio_pin_get_dt(&buttons[10]);
-    report.y = gpio_pin_get_dt(&buttons[11]);
-    report.r1 = gpio_pin_get_dt(&buttons[12]);
-    report.l1 = gpio_pin_get_dt(&buttons[13]);
-    report.a = gpio_pin_get_dt(&buttons[14]);
-    report.b = gpio_pin_get_dt(&buttons[15]);
-    report.r2 = gpio_pin_get_dt(&buttons[16]);
-    report.r2_axis = report.r2 * 255;
-    report.l2 = gpio_pin_get_dt(&buttons[17]);
-    report.l2_axis = report.l2 * 255;
+    //report.capture = gpio_pin_get_dt(&buttons[3]);
+    //report.l3 = gpio_pin_get_dt(&buttons[4]);
+    //report.r3 = gpio_pin_get_dt(&buttons[5]);
+    report.x = gpio_pin_get_dt(&buttons[5]);
+    report.y = gpio_pin_get_dt(&buttons[6]);
+    //report.r1 = gpio_pin_get_dt(&buttons[12]);
+    //report.l1 = gpio_pin_get_dt(&buttons[13]);
+    report.a = gpio_pin_get_dt(&buttons[3]);
+    report.b = gpio_pin_get_dt(&buttons[4]);
+    //report.r2 = gpio_pin_get_dt(&buttons[16]);
+    //report.r2_axis = report.r2 * 255;
+    //report.l2 = gpio_pin_get_dt(&buttons[17]);
+    //report.l2_axis = report.l2 * 255;
 
-    int dpad = gpio_pin_get_dt(&buttons[6]) | (gpio_pin_get_dt(&buttons[8]) << 1) | (gpio_pin_get_dt(&buttons[9]) << 2) | (gpio_pin_get_dt(&buttons[7]) << 3);
+    int dpad = gpio_pin_get_dt(&buttons[7]) | (gpio_pin_get_dt(&buttons[8]) << 1) | (gpio_pin_get_dt(&buttons[9]) << 2) | (gpio_pin_get_dt(&buttons[10]) << 3);
 
     report.dpad = dpad_lut[dpad];
 
@@ -500,3 +499,4 @@ int main() {
         handle_buttons();
     }
 }
+//edits by lingwendil@gmail.com 08/12/2025 0910AM
