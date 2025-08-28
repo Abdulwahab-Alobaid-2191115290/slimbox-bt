@@ -217,6 +217,7 @@ static void disconnected(struct bt_conn* conn, uint8_t reason) {
     LOG_INF("%s (reason=%u)", addr, reason);
 
     if (conn == active_conn) {
+        k_work_submit(&clear_bonds_work)
         CHK(bt_hids_disconnected(&hids_obj, conn));
         active_conn = NULL;
     } else {
