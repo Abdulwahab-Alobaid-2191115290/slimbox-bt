@@ -139,7 +139,7 @@ static void advertising_work_fn(struct k_work* work) {
     } else {
         adv_param = *BT_LE_ADV_CONN;
         adv_param.options |= BT_LE_ADV_OPT_ONE_TIME;
-        if (false && !bt_addr_le_eq(&addr, BT_ADDR_LE_NONE)) {
+        if (!bt_addr_le_eq(&addr, BT_ADDR_LE_NONE)) {
             bt_addr_le_to_str(&addr, addr_buf, BT_ADDR_LE_STR_LEN);
             LOG_INF("Enabling filter: %s", addr_buf);
             adv_param.options |= BT_LE_ADV_OPT_FILTER_CONN;
